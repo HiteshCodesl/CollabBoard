@@ -4,9 +4,11 @@ import jwt from "jsonwebtoken";
 import { SignupSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types"
 import { middleware } from "./middleware.js";
 import { prismaClient } from "@repo/db/client"
- 
+import cors from 'cors'
+
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.post("/signup", async (req, res) => {
     const parsedData = SignupSchema.safeParse(req.body);
@@ -101,7 +103,7 @@ app.get("/chats/:roomId", async(req, res)=>{
     const roomId = Number(req.params.roomId);
     const messages = await prismaClient.chat.findMany({
         where: {
-            roomId: roomId
+            roomId: Number(roomId)
         },
         orderBy: {
             id: "desc"
@@ -133,4 +135,4 @@ app.get("/room/:slug", async(req, res)=>{
 }
 })
 
-app.listen(3001);
+app.listen(3002);
