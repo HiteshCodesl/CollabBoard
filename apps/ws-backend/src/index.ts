@@ -53,9 +53,12 @@ wss.on("connection", function connection(ws, request) {
     })
 
   ws.on("message", async function message(data) {
-
-const parsedData = JSON.parse(data as unknown as string);
-console.log(parsedData, "parsedData")
+let parsedData;
+if(typeof data !== "string"){
+ parsedData = JSON.parse(data.toString());
+}else{
+    parsedData = JSON.parse(data);
+}
 
     if(parsedData.type === "join_room"){
         const user = users.find(x => x.ws === ws);
@@ -72,39 +75,26 @@ console.log(parsedData, "parsedData")
     }   
 
     if(parsedData.type === "chat"){
-        const roomId = Number(parsedData.roomId);
+        const roomId = parsedData.roomId
         const message = parsedData.message;
 
-        const room = await prismaClient.room.findUnique({
-            where: {
-                id: roomId
-            },
-        })
-
-        if(!room){
-           return;
-        }
-        const roomKey = room.slug;
-        
-
-        const res = await prismaClient.chat.create({
+         await prismaClient.chat.create({
             data: {
-               roomId,
+               roomId: Number(roomId),
                message,
                userId
             }
         })
-
           users.forEach((user) => {
-            if(user.rooms.includes(roomKey)){
+            if(user.rooms.includes(roomId)){
                 user.ws.send(JSON.stringify({
                     type: "chat",
                     message: message,
-                    roomId
+                    roomId: Number(roomId)
                 })) 
             }
             else{
-                  console.log("error happend")  
+                  console.log("error happend", Error)  
                 }
         })
     }
