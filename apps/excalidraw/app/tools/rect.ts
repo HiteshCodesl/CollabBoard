@@ -18,6 +18,7 @@ export function createRectShape(
   currY: number
 ): Shape {
   return {
+    id: crypto.randomUUID(),
     type: "rect",
     x: startX,
     y: startY,
