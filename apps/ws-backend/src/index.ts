@@ -37,7 +37,8 @@ wss.on("connection", function connection(ws, request) {
         return;
     }
 
-    const queryParams = new URLSearchParams(url.split("?")[1]);
+    const queryString = url.split("?")[1] || "";
+    const queryParams = new URLSearchParams(queryString);
     const token = queryParams.get("token") || "";
     const userId = checkUser(token);
 
