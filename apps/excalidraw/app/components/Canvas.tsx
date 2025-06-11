@@ -1,8 +1,8 @@
+"use client"
 import { draw } from "@/app/shape/draw"
 import { useContext, useEffect, useRef } from "react"
-import {ShapeTypeContext} from "../app/Context/ToolContext"
+import {ShapeTypeContext} from "../Context/ToolContext"
 import { Navbar } from "./Navbar";
-
 
 export function Canvas({  
     roomId,
@@ -12,7 +12,9 @@ export function Canvas({
     socket: WebSocket
 }) {
      const canvasRef = useRef<HTMLCanvasElement | null>(null);
-     const {selectedTool, setSelectedTool} = useContext(ShapeTypeContext);
+  
+     const {selectedTool, setSelectedTool} = useContext(ShapeTypeContext)!;
+
      const tool = useRef(selectedTool);
 
      useEffect(()=>{
@@ -32,7 +34,7 @@ export function Canvas({
       cleanupDraw?.();
     };
 
-    }, [selectedTool]);
+    }, [selectedTool, roomId, socket] );
 
     useEffect(()=>{
      const canvas = canvasRef.current;

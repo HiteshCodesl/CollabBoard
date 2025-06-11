@@ -6,7 +6,7 @@ import { createContext, ReactNode, useState, } from "react";
   setSelectedTool: (shape: shapeType) => void;
  }
 
-export const ShapeTypeContext = createContext<ShapeContextType | undefined  >(undefined)
+export const ShapeTypeContext = createContext<ShapeContextType | null>(null)
 
 export function ToolContext({children} :{
   children: ReactNode

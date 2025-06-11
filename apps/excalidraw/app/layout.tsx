@@ -29,7 +29,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden max-w-screen w-full`}
       >
            <ToolContext>
-                  {children}
+              {children}
             </ToolContext>
         
       </body>

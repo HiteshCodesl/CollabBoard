@@ -4,7 +4,7 @@ import { WS_URL } from "@/app/config";
 import Loading from "@/app/loading";
 import { useEffect, useState } from "react";
 
-export default function RoomCanvas({
+export function RoomCanvas({
    roomId
 }: {
    roomId: string
