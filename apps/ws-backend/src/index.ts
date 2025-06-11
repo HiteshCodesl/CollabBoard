@@ -32,12 +32,14 @@ function checkUser(token: string): string | null {
 }
 
 wss.on("connection", function connection(ws, request) {
-   const fullUrl = new URL(request.url || "http://localhost" );
-   const token = fullUrl.searchParams.get("token") || "";
-    if (!token) {
+    const url = request.url;
+    if (!url) {
         return;
     }
 
+    const queryString = url.split("?")[1] || "";
+    const queryParams = new URLSearchParams(queryString);
+    const token = queryParams.get("token") || "";
     const userId = checkUser(token);
 
     if (userId == null) {
