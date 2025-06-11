@@ -1,6 +1,7 @@
 "use client"
 import {Canvas} from "./Canvas"
 import { WS_URL } from "@/app/config";
+import Loading from "@/app/loading";
 import { useEffect, useState } from "react";
 
 export default function RoomCanvas({
@@ -9,9 +10,10 @@ export default function RoomCanvas({
    roomId: string
 }) {
    const [socket, setSocket] = useState<WebSocket | null>(null);
-
+   
    useEffect(() => {
-      const ws = new WebSocket(WS_URL);
+      const token = localStorage.getItem("token")
+      const ws = new WebSocket(`${WS_URL}?token=${token}`);
 
       ws.onopen = () => {
          setSocket(ws);
@@ -25,7 +27,7 @@ export default function RoomCanvas({
 
    if (!socket) {
       return <div>
-         Connecting to server.....
+      <Loading />
       </div>
    }
 

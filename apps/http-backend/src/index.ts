@@ -28,9 +28,13 @@ app.post("/signup", async (req, res) => {
             }
         })
   if (user){
-     res.json({
-            userId: user.id  
-        })
+            const token = jwt.sign({
+                userId: user?.id
+            }, JWT_SECRET)
+
+            res.json({
+                token
+            })
     }
  } catch (e) {
         res.status(411).json({
@@ -73,7 +77,7 @@ app.post("/signin", async(req, res) => {
 
 })
 
-app.post ("/room", middleware, async(req:Request , res:Response) => {
+app.post("/room", middleware, async(req:Request , res:Response) => {
 
     const parsedData = CreateRoomSchema.safeParse(req.body);
 
@@ -108,7 +112,7 @@ app.get("/chats/:roomId", async(req, res)=>{
         orderBy: {
             id: "desc"
         },
-        take: 100
+        take: 1000
     })
     res.json({
         messages
@@ -127,12 +131,31 @@ app.get("/room/:slug", async(req, res)=>{
         }
     })
     res.json({
-        room
+       roomId: room?.id
     })
-    console.log(room?.id)
 }catch(e){
     console.log(e)
 }
+})
+
+app.post("/room/id", async(req, res)=>{
+    try{
+     const {id} = req.body;
+
+      const room = await prismaClient.room.findUnique({
+        where:{
+             id: Number(id)
+        }
+      })
+      if(room){
+          res.json({roomId: room?.id})
+    }else{
+     res.status(400).json({message: "invalid roomId"})
+    }
+}
+    catch(e){
+        console.log(e)
+    }
 })
 
 app.listen(3002);

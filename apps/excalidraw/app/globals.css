@@ -2,3 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(rgba(51, 15, 213, 0.549) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(51, 15, 213, 0.549) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}       
+
+
+canvas {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+

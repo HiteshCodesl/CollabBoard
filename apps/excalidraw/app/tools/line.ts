@@ -21,10 +21,11 @@ export function createLineShape(
     currY: number,
 ): Shape{
     return {
+     id: crypto.randomUUID(),
      type: "line",
-     x1: x,
-     y1: y,
-     x2: currX,
-     y2: currY,
+     startX: x,
+     startY: y,
+     endX: currX,
+     endY: currY,
     }
 }

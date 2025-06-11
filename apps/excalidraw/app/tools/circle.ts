@@ -6,9 +6,9 @@ export function drawCirclePreview(
   currX: number,
   currY: number
 ) {
-  const radius = Math.max(currX - startX, currY - startY) / 2;
-  const centerX = startX + radius;
-  const centerY = startY + radius;
+  const radius = Math.abs(Math.max(currX - startX, currY - startY) / 2);
+  const centerX = Math.abs(startX + radius);
+  const centerY = Math.abs(startY + radius);
 
   ctx.beginPath();
   ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
@@ -25,9 +25,10 @@ export function createCircleShape(
   const radius = Math.max(currX - startX, currY - startY) / 2;
 
   return {
+    id: crypto.randomUUID(),
     type: "circle",
-    radius,
-    centerX: startX + radius,
-    centerY: startY + radius,
+    radius: Math.abs(radius),
+    centerX:   startX + radius,
+    centerY:   startY + radius,
   };
 }

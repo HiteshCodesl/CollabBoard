@@ -43,10 +43,7 @@ export async function draw(
         const currX = e.offsetX;
         const currY = e.offsetY;
 
-        const erasedShape = eraseShapeAtPoint(currX, currY,existingShapes,  canvas, ctx);
-        if(erasedShape){
-            
-        }
+         eraseShapeAtPoint(currX, currY,existingShapes,  canvas, ctx);
 
         let shape: Shape | null = null;
         const tool = getTool();
@@ -78,16 +75,17 @@ export async function draw(
     }
 
     const onMouseMove = (e: MouseEvent) =>{
+        const rect = canvas.getBoundingClientRect();
         if (clicked) {
-            const currX = e.offsetX;
-            const currY = e.offsetY;
+            const currX = (e.offsetX - rect.left)*(canvas.width / rect.width);
+            const currY = (e.offsetY - rect.top)*(canvas.height / rect.height); 
 
             ctx.strokeStyle = "rgba(255, 255, 255)"
             const tool = getTool();
 
-            if (tool !== "pen") {
-                clearCanvas(existingShapes, canvas, ctx);
-            }
+         if (tool !== "pen") {
+             clearCanvas(existingShapes, canvas, ctx);
+        }
 
             if (tool === "rect") {
                 drawRectPreview(ctx, startX, startY, currX, currY)
@@ -102,7 +100,7 @@ export async function draw(
                 drawLinePreview(ctx, startX, startY, currX, currY)
             }
             else if (tool === "eraser"){ 
-           const erasedShapeId =  eraseShapeAtPoint(currX, currY,existingShapes, canvas, ctx);
+           const erasedShapeId = eraseShapeAtPoint(currX, currY,existingShapes, canvas, ctx);
            if(erasedShapeId){
                 socket.send(JSON.stringify({
                     type: "delete",
@@ -120,14 +118,16 @@ export async function draw(
         if(message.type === "chat"){
         const parsedShape = JSON.parse(message.message);
         existingShapes.push(parsedShape.shape);
-        clearCanvas(existingShapes, canvas, ctx);
+        clearCanvas(existingShapes, canvas, ctx)
+
         }
         if(message.type === "delete"){
         existingShapes = existingShapes.filter(shape => shape.id !== message.shapeId);
         clearCanvas(existingShapes, canvas, ctx)
-        }
+
     }
-    clearCanvas(existingShapes, canvas, ctx)
+}
+clearCanvas(existingShapes, canvas, ctx)
 
     canvas.addEventListener("mousedown", onMouseDown)
 
@@ -145,8 +145,5 @@ export async function draw(
         canvas.removeEventListener("mousemove", onMouseMove)
 
         socket.removeEventListener("message", onMessage)
-
     }
-
-    
 }

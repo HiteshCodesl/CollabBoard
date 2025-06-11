@@ -1,8 +1,14 @@
+import App from "."
 
-export default function Home() {
-  return (
-    <div className="text-2xl  mt-4">
-      Excalidraw-app
-    </div>
-  );
+export const metadata = {
+  title: "WhiteBoard collabarative app",
+  description: "Create, brainstorm, and innovate together in real-time",
 }
+export default function page() {
+  return (
+    <div>
+       <App />
+    </div>
+  )
+}
+

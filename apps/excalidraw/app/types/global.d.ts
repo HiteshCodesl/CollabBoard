@@ -1,28 +1,36 @@
 
  type Shape = {
+       id: string,
        type: "rect",
        x: number;
        y: number;
        width: number;
        height: number;
    } | {
+       id: string,
        type: "circle";
        centerX: number;
        centerY: number;
        radius: number;
    } | {
-       type: "pen";
-       points: {
+        id: string,
+        type: "pen";
+        points: {
         x: number;
         y: number;
        }[] 
    } | {
+        id: string
         type: "line";
-        x1: number;
-        y1: number;
-        x2: number;
-        y2: number;
-       }
+        startX: number;
+        startY: number;
+        endX: number;
+        endY: number;
+    } | {
+        id: string,
+        type: "eraser";
+        size: number
+    }
     
 type shapeType = "rect" | "circle" | "pen" | "line" | "eraser" 
 

@@ -18,8 +18,9 @@ export function drawPenStroke(
 }
 
 export function createPenShape(points: { x: number; y: number }[]): Shape {
-  return {
+  return {      
+    id: crypto.randomUUID(),
     type: "pen",
-    points,
+    points: points,
   };
 }

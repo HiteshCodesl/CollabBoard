@@ -5,16 +5,16 @@ export function Navbar({selectedTool, setSelectedTool}: {
     selectedTool: shapeType,
     setSelectedTool: (s: shapeType) => void
 }) {
-   return <div className="fixed flex justify-center w-full mx-auto top-20 ">
+   return <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black/80 rounded-2xl px-4 flex items-center justify-center gap-4 z-50 flex-wrap sm:flex-nowrap max-w-[90%]">
 
-      <div className= "flex gap-32 p-10 px-60 bg-[#18181b] rounded-3xl items-center ">
+      <div className= "flex gap-10 p-3 px-24 bg-[#18181b] rounded-xl  items-center mx-auto justify-center">
 
     <Icons onClick={()=>{
               setSelectedTool("pen")
       }} 
            activated = {selectedTool === "pen"}
            icon={<Pen  
-           size={100} 
+           size={24} 
            strokeWidth={1} />} 
     />
 
@@ -23,7 +23,7 @@ export function Navbar({selectedTool, setSelectedTool}: {
       }}
            activated = {selectedTool === "rect"} 
            icon={<RectangleHorizontal 
-           size={100} 
+           size={24} 
            strokeWidth={1} />}
     />
 
@@ -32,7 +32,7 @@ export function Navbar({selectedTool, setSelectedTool}: {
               }}
             activated = {selectedTool === "circle"}
             icon={<Circle 
-            size={100} 
+            size={24} 
             strokeWidth={1} />}
     />
 
@@ -41,7 +41,7 @@ export function Navbar({selectedTool, setSelectedTool}: {
               }}
             activated = {selectedTool === "line"}
             icon={<Slash 
-            size={100} 
+            size={24} 
             strokeWidth={1} />}
     />
 
@@ -50,7 +50,7 @@ export function Navbar({selectedTool, setSelectedTool}: {
               }}
             activated = {selectedTool === "eraser"}
             icon={<Eraser 
-            size={100} 
+            size={24} 
             strokeWidth={1} />}
     />
 

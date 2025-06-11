@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef } from "react"
 import {ShapeTypeContext} from "../app/Context/ToolContext"
 import { Navbar } from "./Navbar";
 
+
 export function Canvas({  
     roomId,
     socket
@@ -22,7 +23,7 @@ export function Canvas({
     let cleanupDraw: (() => void) | undefined;
 
         if (canvasRef.current) {
-           draw(canvasRef.current, roomId, socket, selectedTool, ()=> tool.current).then((cleanup) => {
+           draw(canvasRef.current,roomId, socket, selectedTool, ()=> tool.current).then((cleanup) => {
            cleanupDraw = cleanup;
       });
 
@@ -42,9 +43,14 @@ export function Canvas({
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth
 
-    canvas.style.height = `${window.innerHeight}px`;
-    canvas.style.width = `${window.innerWidth}px`;
-    }, [])
+    canvas.style.width = "100vw";
+    canvas.style.height = "100vh"
+
+    })
+
+    window.addEventListener('resize', function(){
+        this.window.location.reload();
+    })
 
     return <div>
                <canvas className="w-screen h-screen"

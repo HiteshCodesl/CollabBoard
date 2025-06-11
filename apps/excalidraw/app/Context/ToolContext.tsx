@@ -11,7 +11,7 @@ export const ShapeTypeContext = createContext<ShapeContextType | undefined  >(un
 export function ToolContext({children} :{
   children: ReactNode
 }){
-   const [selectedTool, setSelectedTool] = useState<shapeType>("rect");
+   const [selectedTool, setSelectedTool] = useState<shapeType>("pen");
 
   return <ShapeTypeContext.Provider value={{selectedTool, setSelectedTool}}>
           {children}
