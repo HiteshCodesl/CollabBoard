@@ -3,5 +3,12 @@
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "./dist",
-    }
+    }, 
+    "include": [
+        "src",
+        "../../packages/backend-common/src",
+        "../../packages/common/src",
+        "../../packages/db",
+    
+    ]
 }
