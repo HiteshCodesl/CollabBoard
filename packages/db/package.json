@@ -2,9 +2,10 @@
   "name": "@repo/db",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "exports": {
-    "./client": "./src/index.ts"
+    ".": "./dist/index.js",
+    "./client": "./dist/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,7 +18,7 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "6.8.2",
-    "prisma": "^6.8.2"
+    "@prisma/client": "5.15.0",
+    "prisma": "5.15.0"
   }
 }

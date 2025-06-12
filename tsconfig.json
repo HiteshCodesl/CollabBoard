@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "apps/http-backend" },
+    {"path": "apps/ws-backend"},
     { "path": "packages/db" },
     { "path": "packages/common" },
     { "path": "packages/backend-common" }
