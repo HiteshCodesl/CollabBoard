@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { SignupSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types"
 import { middleware } from "./middleware.js";
 import cors from 'cors'
-import { prismaClient } from "@repo/db/client";
+import { prismaClient } from "@repo/db";
 
 const app = express();
 app.use(express.json());
