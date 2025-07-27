@@ -1,12 +1,13 @@
 "use client"
 import React, { useState } from 'react';
-import { Users, Plus, ArrowRight, Zap, Shield, Globe, X, Palette, MessageSquare, Download, Star,  } from 'lucide-react';
+import { Users, Plus, ArrowRight, Zap, Shield, Globe, X, Palette, MessageSquare, Download, Star, Loader2,  } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
-
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import dynamic from 'next/dynamic';
 import { BACKEND_URL } from './config';
+import { error } from 'console';
 
 interface ModalProps {
   isOpen: boolean;
@@ -32,16 +33,22 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   );
 };
 
+const WhiteboardPreview = dynamic(() => import('@/app/preview'), {
+  ssr: false
+})
+
 function App() {
   const router = useRouter();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [roomSlug, setRoomSlug] = useState('');
   const [roomId, setRoomId] = useState("");
+  const [loading, setLoading] = useState(false);
   const createRoomRef = useRef<HTMLInputElement>(null)
   const joinRoomRef = useRef<HTMLInputElement>(null);
 
  const handleCreateRoom = async(e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
     if (roomSlug.trim()) {
       setShowCreateModal(false);
@@ -60,11 +67,13 @@ function App() {
       const roomId = data.roomId;
       router.push(`/canvas/${roomId}`)
       setShowCreateModal(false);
+      setLoading(false);
      }
   };
 
 const handleJoinRoom = async(e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     if (roomSlug.trim()) {
       setShowCreateModal(false);
       setRoomId("");
@@ -76,8 +85,13 @@ const handleJoinRoom = async(e: React.FormEvent) => {
         Authorization: localStorage.getItem("token")
       }
     })
+
+    if(!response){
+      roomNotFound();
+    }
     
     if(response.status === 200){
+      setLoading(false);
       const data = response.data;
       const roomId = data.roomId;
        router.push(`/canvas/${roomId}`)
@@ -117,18 +131,18 @@ const handleJoinRoom = async(e: React.FormEvent) => {
         </header>
 
         {/* Hero Section */}
-        <section className="px-6 py-20">
+        <section className="px-6 py-10">
           <div className="max-w-6xl mx-auto text-center">
             <div className="inline-flex items-center bg-blue-50 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-8">
               <Star className="w-4 h-4 mr-2" />
               Trusted by 50,000+ teams worldwide
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-8 leading-tight">
+            <h1 className="hero-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6 sm:mb-8 leading-tight px-4">
               Whiteboard Collaborative App
             </h1>
             
-            <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+             <p className="hero-text text-base sm:text-lg lg:text-xl text-gray-700 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-4">
               Transform your ideas into reality with our powerful collaborative whiteboard platform. 
               Create, brainstorm, and innovate together in real-time, no matter where your team is located.
             </p>
@@ -141,7 +155,7 @@ const handleJoinRoom = async(e: React.FormEvent) => {
               >
                 <Plus className="w-6 h-6" />
                 <span>Create New Room</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+                {loading ? <Loader2 /> :<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />}
               </button>
               
               <button
@@ -150,28 +164,12 @@ const handleJoinRoom = async(e: React.FormEvent) => {
               >
                 <Users className="w-6 h-6" />
                 <span>Join Existing Room</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+                {loading ? <Loader2 /> : <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />}
               </button>
             </div>
 
             {/* Demo Preview */}
-            <div className="relative max-w-4xl mx-auto mb-20">
-              <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
-                <div className="bg-gray-100 px-6 py-4 flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                  <div className="ml-4 text-sm text-gray-600">CollabBoard - Whiteboard Session</div>
-                </div>
-                <div className="h-96 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
-                  <div className="text-center">
-                    <Palette className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-                    <p className="text-gray-600 text-lg">Interactive Whiteboard Preview</p>
-                    <p className="text-gray-500 text-sm mt-2">Real-time collaboration in action</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <WhiteboardPreview />
           </div>
         </section>
 
@@ -480,7 +478,7 @@ const handleJoinRoom = async(e: React.FormEvent) => {
           
           <form onSubmit={handleJoinRoom} className="space-y-6">
             <div>
-              <label htmlFor="roomId" className="block text-sm font-medium text-gray-700 mb-2">
+             <label htmlFor="roomId" className="block text-sm font-medium text-gray-700 mb-2">
                 Room ID
               </label>
               <input
