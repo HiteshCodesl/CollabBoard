@@ -21,9 +21,10 @@ export function createCircleShape(
   startY: number,
   currX: number,
   currY: number,
+  
 ): Shape {
  const radius = Math.abs(currX - startX) / 2;
-
+console.log(currY);
   return {
     id: crypto.randomUUID(),
     type: "circle",
