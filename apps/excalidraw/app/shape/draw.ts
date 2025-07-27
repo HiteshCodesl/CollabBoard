@@ -3,7 +3,7 @@ import { clearCanvas } from "./clearCanvas";
 import { createRectShape, drawRectPreview, } from "../tools/rect";
 import { createCircleShape, drawCirclePreview } from "../tools/circle";
 import { createPenShape, drawPenStroke } from "../tools/pen";
-import { drawLinePreview, createLineShape} from "../tools/line";
+import { drawLinePreview, createLineShape } from "../tools/line";
 import { eraseShapeAtPoint } from "../tools/eraser";
 
 export async function draw(
@@ -12,14 +12,14 @@ export async function draw(
     socket: WebSocket,
     selectedTool: shapeType,
     getTool: () => shapeType): Promise<() => void> {
-    
+
     const ctx = canvas.getContext("2d");
 
     if (!ctx) {
-        return () => {};
+        return () => { };
     }
 
-    let existingShapes: Shape[]= await getExistingShapes(roomId);
+    let existingShapes: Shape[] = await getExistingShapes(roomId);
     let penPoints: { x: number, y: number }[] = [];
 
     let clicked = false;
@@ -38,12 +38,12 @@ export async function draw(
     }
 
     const onMouseUp = (e: MouseEvent) => {
-        
+
         clicked = false;
         const currX = e.offsetX;
         const currY = e.offsetY;
 
-         eraseShapeAtPoint(currX, currY,existingShapes,  canvas, ctx);
+        eraseShapeAtPoint(currX, currY, existingShapes, canvas, ctx);
 
         let shape: Shape | null = null;
         const tool = getTool();
@@ -57,10 +57,10 @@ export async function draw(
         else if (tool === "pen") {
             shape = createPenShape(penPoints);
         }
-        else if (tool === "line"){
+        else if (tool === "line") {
             shape = createLineShape(startX, startY, currX, currY)
         }
-        
+
         if (!shape) { return };
         existingShapes.push(shape);
 
@@ -74,18 +74,19 @@ export async function draw(
         clearCanvas(existingShapes, canvas, ctx)
     }
 
-    const onMouseMove = (e: MouseEvent) =>{
+    const onMouseMove = (e: MouseEvent) => {
         const rect = canvas.getBoundingClientRect();
         if (clicked) {
-            const currX = (e.offsetX - rect.left)*(canvas.width / rect.width);
-            const currY = (e.offsetY - rect.top)*(canvas.height / rect.height); 
+            const currX = e.offsetX;
+            const currY = e.offsetY;
+
 
             ctx.strokeStyle = "rgba(255, 255, 255)"
             const tool = getTool();
 
-         if (tool !== "pen") {
-             clearCanvas(existingShapes, canvas, ctx);
-        }
+            if (tool !== "pen") {
+                clearCanvas(existingShapes, canvas, ctx);
+            }
 
             if (tool === "rect") {
                 drawRectPreview(ctx, startX, startY, currX, currY)
@@ -96,45 +97,49 @@ export async function draw(
             else if (tool === "pen") {
                 drawPenStroke(ctx, penPoints, { x: currX, y: currY })
             }
-            else if (tool === "line"){
+            else if (tool === "line") {
                 drawLinePreview(ctx, startX, startY, currX, currY)
             }
-            else if (tool === "eraser"){ 
-           const erasedShapeId = eraseShapeAtPoint(currX, currY,existingShapes, canvas, ctx);
-           if(erasedShapeId){
-                socket.send(JSON.stringify({
-                    type: "delete",
-                    roomId: Number(roomId),
-                    shapeId: erasedShapeId
-                }))
-               }
-               clearCanvas(existingShapes, canvas, ctx)
+            else if (tool === "eraser") {
+                const erasedShapeId = eraseShapeAtPoint(currX, currY, existingShapes, canvas, ctx);
+                if (erasedShapeId) {
+                    socket.send(JSON.stringify({
+                        type: "delete",
+                        roomId: Number(roomId),
+                        shapeId: erasedShapeId
+                    }))
+                }
+                clearCanvas(existingShapes, canvas, ctx)
             }
+        }
     }
-}
     const onMessage = (event: MessageEvent) => {
         const message = JSON.parse(event.data);
 
-        if(message.type === "chat"){
-        const parsedShape = JSON.parse(message.message);
-        existingShapes.push(parsedShape.shape);
-        clearCanvas(existingShapes, canvas, ctx)
+        if (message.type === "chat") {
+            const parsedShape = JSON.parse(message.message);
+
+            if (!existingShapes.find(s => s.id === parsedShape.shape.id)) {
+                existingShapes.push(parsedShape.shape);
+                clearCanvas(existingShapes, canvas, ctx);
+            }
+            clearCanvas(existingShapes, canvas, ctx)
 
         }
-        if(message.type === "delete"){
-        existingShapes = existingShapes.filter(shape => shape.id !== message.shapeId);
-        clearCanvas(existingShapes, canvas, ctx)
+        if (message.type === "delete") {
+            existingShapes = existingShapes.filter(shape => shape.id !== message.shapeId);
+            clearCanvas(existingShapes, canvas, ctx)
 
+        }
     }
-}
-clearCanvas(existingShapes, canvas, ctx)
+    clearCanvas(existingShapes, canvas, ctx)
 
     canvas.addEventListener("mousedown", onMouseDown)
 
     canvas.addEventListener("mouseup", onMouseUp)
 
     canvas.addEventListener("mousemove", (onMouseMove))
-    
+
     socket.addEventListener("message", onMessage)
 
     return () => {
