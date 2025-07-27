@@ -5,7 +5,7 @@ export function Navbar({selectedTool, setSelectedTool}: {
     selectedTool: shapeType,
     setSelectedTool: (s: shapeType) => void
 }) {
-   return <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black/80 rounded-2xl px-4 flex items-center justify-center gap-4 z-50 flex-wrap sm:flex-nowrap max-w-[90%]">
+   return <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black/80 rounded-2xl px-4 flex items-center justify-center gap-4 z-50  flex-wrap sm:flex-nowrap max-w-[90%]">
 
       <div className= "flex gap-10 p-3 px-24 bg-[#18181b] rounded-xl  items-center mx-auto justify-center">
 

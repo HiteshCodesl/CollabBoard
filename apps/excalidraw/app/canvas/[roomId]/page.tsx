@@ -7,6 +7,6 @@ interface CanvasPageProps {
   };
 }
 
-export default function CanvasPage({ params }: CanvasPageProps) {
-  return <RoomCanvas roomId={params.roomId} />;
+export default async function CanvasPage({ params }: CanvasPageProps) {
+  return <RoomCanvas roomId={ params.roomId} />;
 }

@@ -10,7 +10,7 @@ export function Icons({
      activated: boolean
 }) {
   return (
-    <div  className={`pointer flex  gap-2 ${activated ? " p-4 bg-[#a5abfc] rounded-xl" :"text-white"}`} onClick={onClick}>
+    <div  className={` hover:cursor-pointer flex   gap-2 ${activated ? " p-4 bg-[#a5abfc] rounded-xl" :"text-white"}`} onClick={onClick}>
       {icon}
     </div>
   )

@@ -19,7 +19,7 @@ app.post("/signup", async (req, res) => {
         })
         return;
     }
-    try {
+  try{
        const user = await prismaClient.user.create({
             data: {
                 username: parsedData.data?.username,
@@ -31,16 +31,13 @@ app.post("/signup", async (req, res) => {
             const token = jwt.sign({
                 userId: user?.id
             }, JWT_SECRET)
-
             res.json({
                 token
             })
     }
- } catch (e) {
-        res.status(411).json({
-            message: "User already exists "
-        })
-    }
+   }catch(e){
+     console.log("User Not Created", e)
+  }
 })
 
 app.post("/signin", async(req, res) => {

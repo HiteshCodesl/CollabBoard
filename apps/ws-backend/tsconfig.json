@@ -2,10 +2,15 @@
     "extends": "@repo/typescript-config/base.json",
     "compilerOptions": {
         "outDir": "./dist",
+        "rootDir": "./src",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
         "module": "NodeNext"
         },
-        "include": [
-            "../../packages/backend-common/src",
-            "../../packages/db"
-        ]
+       "references": [
+  { "path": "../../packages/backend-common" },
+  { "path": "../../packages/db" },
+  { "path": "../../packages/common" }
+],
+    "include": ["src"]
 }
