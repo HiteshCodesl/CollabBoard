@@ -85,10 +85,6 @@ const handleJoinRoom = async(e: React.FormEvent) => {
         Authorization: localStorage.getItem("token")
       }
     })
-
-    if(!response){
-      roomNotFound();
-    }
     
     if(response.status === 200){
       setLoading(false);
