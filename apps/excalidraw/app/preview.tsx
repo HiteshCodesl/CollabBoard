@@ -1,6 +1,6 @@
 "use client"
 import React, { useRef, useState, useEffect } from 'react';
-import { Square, Circle, Minus, Palette, RotateCcw, Eraser } from 'lucide-react';
+import { Square, Circle, Minus, Palette, RotateCcw } from 'lucide-react';
 
 interface Point {
   x: number;
@@ -19,7 +19,7 @@ const WhiteboardPreview: React.FC = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentTool, setCurrentTool] = useState<'rectangle' | 'circle' | 'line' | 'freehand' | 'eraser'>('freehand');
   const [currentColor, setCurrentColor] = useState('#3b82f6');
-  const [strokeWidth, setStrokeWidth] = useState(3);
+  const strokeWidth = 3;
   const [shapes, setShapes] = useState<Shape[]>([]);
   const [currentShape, setCurrentShape] = useState<Shape | null>(null);
   const [startPoint, setStartPoint] = useState<Point | null>(null);
@@ -165,7 +165,7 @@ const WhiteboardPreview: React.FC = () => {
     setCurrentShape(null);
   };
 
-  return (
+ return (
     <div className="relative max-w-4xl mx-auto mb-12 sm:mb-20 px-4">
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden">
         {/* Toolbar */}

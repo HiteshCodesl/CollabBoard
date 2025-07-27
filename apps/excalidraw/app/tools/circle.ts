@@ -20,7 +20,6 @@ export function createCircleShape(
   startX: number,
   startY: number,
   currX: number,
-  currY: number
 ): Shape {
  const radius = Math.abs(currX - startX) / 2;
 

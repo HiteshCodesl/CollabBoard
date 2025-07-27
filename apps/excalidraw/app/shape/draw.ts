@@ -75,7 +75,7 @@ export async function draw(
     }
 
     const onMouseMove = (e: MouseEvent) => {
-        const rect = canvas.getBoundingClientRect();
+        canvas.getBoundingClientRect();
         if (clicked) {
             const currX = e.offsetX;
             const currY = e.offsetY;
