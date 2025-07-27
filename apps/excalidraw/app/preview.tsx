@@ -124,7 +124,7 @@ const WhiteboardPreview: React.FC = () => {
     setStartPoint(point);
 
     const newShape: Shape = {
-      type: currentTool === 'eraser' ? 'freehand' : currentTool,
+      type: currentTool,
       points: [point],
       color: currentColor,
       strokeWidth: strokeWidth
