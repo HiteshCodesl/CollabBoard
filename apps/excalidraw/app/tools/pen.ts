@@ -10,7 +10,7 @@ export function drawPenStroke(
   ctx.beginPath();
   ctx.moveTo(prev.x, prev.y);
   ctx.lineTo(point.x, point.y);
-  ctx.lineWidth = 6;
+  ctx.lineWidth = 1;
   ctx.lineCap = "round";
   ctx.strokeStyle = "white";
   ctx.stroke();
