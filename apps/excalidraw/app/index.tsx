@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { BACKEND_URL } from './config';
-import { error } from 'console';
 
 interface ModalProps {
   isOpen: boolean;
