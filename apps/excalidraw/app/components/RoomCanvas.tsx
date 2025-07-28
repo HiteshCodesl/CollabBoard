@@ -23,7 +23,7 @@ export function RoomCanvas({
          })
          ws.send(data);
       }
-}, [])
+}, [roomId])
 
    if (!socket) {
       return <div>
